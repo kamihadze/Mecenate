@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchPostsFeed } from '../api/posts';
-import { useSessionStore } from '../stores/StoreContext';
+import { useSessionStore, useUIStore } from '../stores/StoreContext';
 
 const PAGE_SIZE = 10;
 
@@ -13,7 +13,8 @@ export const postsFeedQueryKey = (simulateError: boolean) =>
 
 export function usePostsFeed(options: UsePostsFeedOptions = {}) {
   const session = useSessionStore();
-  const simulateError = options.simulateError ?? false;
+  const ui = useUIStore();
+  const simulateError = options.simulateError ?? ui.forceError;
 
   return useInfiniteQuery({
     queryKey: postsFeedQueryKey(simulateError),

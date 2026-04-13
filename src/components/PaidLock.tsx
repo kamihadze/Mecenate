@@ -1,29 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, radii, sizes, typography } from '../theme/tokens';
+import { useUIStore } from '../stores/StoreContext';
 import { DonateIcon } from './icons/DonateIcon';
+import { DonateModal } from './DonateModal';
 
-interface Props {
-  onPress?: () => void;
-}
+export const PaidLock: React.FC = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const ui = useUIStore();
 
-export const PaidLock: React.FC<Props> = ({ onPress }) => (
-  <View style={styles.overlay} accessibilityRole="summary">
-    <View style={styles.iconWrap}>
-      <DonateIcon size={30} color="#FFFFFF" />
+  return (
+    <View style={styles.overlay} accessibilityRole="summary">
+      <View style={styles.iconWrap}>
+        <DonateIcon size={30} color="#FFFFFF" />
+      </View>
+      <Text style={styles.message}>
+        Контент скрыт пользователем.{'\n'}Доступ откроется после доната
+      </Text>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => setModalVisible(true)}
+        style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+      >
+        <Text style={styles.buttonLabel}>Отправить донат</Text>
+      </Pressable>
+      <DonateModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onConfirm={() => ui.triggerError()}
+      />
     </View>
-    <Text style={styles.message}>
-      Контент скрыт пользователем.{'\n'}Доступ откроется после доната
-    </Text>
-    <Pressable
-      accessibilityRole="button"
-      onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
-    >
-      <Text style={styles.buttonLabel}>Отправить донат</Text>
-    </Pressable>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   overlay: {
@@ -52,7 +60,6 @@ const styles = StyleSheet.create({
     height: sizes.primaryButtonHeight,
     borderRadius: radii.button,
     backgroundColor: colors.primary,
-    alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,

@@ -14,8 +14,10 @@ import { colors, spacing } from '../theme/tokens';
 import { PostCard } from '../components/PostCard';
 import { ErrorState } from '../components/ErrorState';
 import { PostSkeleton } from '../components/PostSkeleton';
+import { useUIStore } from '../stores/StoreContext';
 
 export const FeedScreen: React.FC = observer(() => {
+  const ui = useUIStore();
   const query = usePostsFeed();
 
   const posts = useMemo<Post[]>(
@@ -56,6 +58,7 @@ export const FeedScreen: React.FC = observer(() => {
         message="Не удалось загрузить публикации"
         actionLabel="Повторить"
         onRetry={() => query.refetch()}
+        onBack={ui.forceError ? () => ui.clearError() : undefined}
       />
     );
   }

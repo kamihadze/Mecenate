@@ -20,3 +20,4 @@ export const useStore = (): RootStore => {
 };
 
 export const useSessionStore = () => useStore().session;
+export const useUIStore = () => useStore().ui;

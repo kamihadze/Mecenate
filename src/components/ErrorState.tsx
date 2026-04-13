@@ -7,12 +7,16 @@ interface Props {
   message?: string;
   actionLabel?: string;
   onRetry: () => void;
+  onBack?: () => void;
+  backLabel?: string;
 }
 
 export const ErrorState: React.FC<Props> = ({
   message = 'Не удалось загрузить публикации',
   actionLabel = 'Повторить',
   onRetry,
+  onBack,
+  backLabel = 'Назад',
 }) => (
   <View style={styles.wrap}>
     <Image
@@ -28,6 +32,15 @@ export const ErrorState: React.FC<Props> = ({
     >
       <Text style={styles.buttonLabel}>{actionLabel}</Text>
     </Pressable>
+    {onBack && (
+      <Pressable
+        accessibilityRole="button"
+        onPress={onBack}
+        style={({ pressed }) => [styles.secondaryButton, pressed && styles.buttonPressed]}
+      >
+        <Text style={styles.secondaryLabel}>{backLabel}</Text>
+      </Pressable>
+    )}
   </View>
 );
 
@@ -64,5 +77,19 @@ const styles = StyleSheet.create({
   buttonLabel: {
     ...typography.buttonLarge,
     color: '#FFFFFF',
+  },
+  secondaryButton: {
+    marginTop: spacing.s,
+    height: sizes.primaryButtonHeight,
+    borderRadius: radii.button,
+    backgroundColor: colors.chipBg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    paddingHorizontal: spacing.xl,
+  },
+  secondaryLabel: {
+    ...typography.buttonLarge,
+    color: colors.textPrimary,
   },
 });
