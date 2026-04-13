@@ -1,0 +1,68 @@
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { colors, radii, sizes, spacing, typography } from '../theme/tokens';
+
+interface Props {
+  message?: string;
+  actionLabel?: string;
+  onRetry: () => void;
+}
+
+export const ErrorState: React.FC<Props> = ({
+  message = 'Не удалось загрузить публикации',
+  actionLabel = 'Повторить',
+  onRetry,
+}) => (
+  <View style={styles.wrap}>
+    <Image
+      source={require('../../assets/images/axolotl.png')}
+      style={styles.illustration}
+      contentFit="contain"
+    />
+    <Text style={styles.message}>{message}</Text>
+    <Pressable
+      accessibilityRole="button"
+      onPress={onRetry}
+      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+    >
+      <Text style={styles.buttonLabel}>{actionLabel}</Text>
+    </Pressable>
+  </View>
+);
+
+const styles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.l,
+  },
+  illustration: {
+    width: 160,
+    height: 160,
+  },
+  message: {
+    ...typography.paidMessage,
+    color: colors.textPrimary,
+    textAlign: 'center',
+    marginTop: spacing.l,
+  },
+  button: {
+    marginTop: spacing.l,
+    height: sizes.primaryButtonHeight,
+    borderRadius: radii.button,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    paddingHorizontal: spacing.xl,
+  },
+  buttonPressed: {
+    opacity: 0.9,
+  },
+  buttonLabel: {
+    ...typography.buttonLarge,
+    color: '#FFFFFF',
+  },
+});
