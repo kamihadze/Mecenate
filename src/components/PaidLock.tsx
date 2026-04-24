@@ -12,7 +12,7 @@ export const PaidLock: React.FC = () => {
   return (
     <View style={styles.overlay} accessibilityRole="summary">
       <View style={styles.iconWrap}>
-        <DonateIcon size={30} color="#FFFFFF" />
+        <DonateIcon size={30} color={colors.onPrimary} />
       </View>
       <Text style={styles.message}>
         Контент скрыт пользователем.{'\n'}Доступ откроется после доната
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   message: {
     ...typography.paidMessage,
-    color: '#FFFFFF',
+    color: colors.onPrimary,
     textAlign: 'center',
     marginTop: 8,
   },
@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     ...typography.buttonLarge,
-    color: '#FFFFFF',
+    color: colors.onPrimary,
   },
 });

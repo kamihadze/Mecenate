@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     ...typography.buttonLarge,
-    color: '#FFFFFF',
+    color: colors.onPrimary,
   },
   secondaryButton: {
     marginTop: spacing.s,

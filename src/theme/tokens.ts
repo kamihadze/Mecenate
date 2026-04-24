@@ -5,6 +5,8 @@ export const colors = {
   textSecondary: '#57626F',
   chipBg: '#EFF2F7',
   primary: '#6115CD',
+  onPrimary: '#FFFFFF',
+  iconMuted: '#57626F',
   likeActive: '#FF2B75',
   likeActiveText: '#FFEAF1',
   skeleton: '#EEEFF1',

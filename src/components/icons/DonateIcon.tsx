@@ -1,12 +1,13 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { colors } from '../../theme/tokens';
 
 interface Props {
   size?: number;
   color?: string;
 }
 
-export const DonateIcon: React.FC<Props> = ({ size = 30, color = '#FFFFFF' }) => (
+export const DonateIcon: React.FC<Props> = ({ size = 30, color = colors.onPrimary }) => (
   <Svg width={size} height={size} viewBox="0 0 30 30" fill="none">
     <Path
       fillRule="evenodd"

@@ -20,7 +20,7 @@ export const DonateModal: React.FC<Props> = ({ visible, onClose, onConfirm }) =>
       <Pressable style={styles.backdrop} onPress={onClose}>
         <Pressable style={styles.card} onPress={() => {}}>
           <View style={styles.iconWrap}>
-            <DonateIcon size={30} color="#FFFFFF" />
+            <DonateIcon size={30} color={colors.onPrimary} />
           </View>
           <Text style={styles.title}>Поддержать автора</Text>
           <Text style={styles.message}>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   primaryLabel: {
     ...typography.buttonLarge,
-    color: '#FFFFFF',
+    color: colors.onPrimary,
   },
   secondaryButton: {
     marginTop: spacing.s,
