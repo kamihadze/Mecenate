@@ -25,7 +25,7 @@ const HeaderBack: React.FC<NativeStackHeaderLeftProps> = ({ canGoBack }) => {
         style={({ pressed }) => [styles.backBtn, pressed && styles.backPressed]}
         onPress={() => navigation.goBack()}
       >
-        <BackIcon />
+        <BackIcon color={colors.onPrimary} />
       </Pressable>
     </View>
   );

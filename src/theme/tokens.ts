@@ -16,7 +16,7 @@ export const colors = {
   likeActiveText: '#FFEAF1',
   skeleton: '#EEEFF1',
   overlay: 'rgba(0, 0, 0, 0.5)',
-  scrim: 'rgba(255, 255, 255, 0.85)',
+  scrim: 'rgba(0, 0, 0, 0.35)',
   gradientEnd: '#FFFFFF',
 } as const;
 
