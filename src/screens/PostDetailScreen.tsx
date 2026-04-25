@@ -74,10 +74,10 @@ export const PostDetailScreen: React.FC = () => {
   if (postQuery.isPending) {
     return (
       <SafeAreaView style={styles.wrap} edges={['top']}>
-        <FloatingBack onBack={() => navigation.goBack()} />
         <View style={styles.center}>
           <ActivityIndicator color={colors.primary} />
         </View>
+        <FloatingBack onBack={() => navigation.goBack()} />
       </SafeAreaView>
     );
   }
@@ -85,12 +85,12 @@ export const PostDetailScreen: React.FC = () => {
   if (postQuery.isError || !post) {
     return (
       <SafeAreaView style={styles.wrap} edges={['top']}>
-        <FloatingBack onBack={() => navigation.goBack()} />
         <ErrorState
           message="Не удалось загрузить публикацию"
           actionLabel="Повторить"
           onRetry={() => postQuery.refetch()}
         />
+        <FloatingBack onBack={() => navigation.goBack()} />
       </SafeAreaView>
     );
   }
@@ -99,8 +99,6 @@ export const PostDetailScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.wrap} edges={['top']}>
-      <FloatingBack onBack={() => navigation.goBack()} />
-
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -189,6 +187,8 @@ export const PostDetailScreen: React.FC = () => {
           />
         </View>
       </KeyboardAvoidingView>
+
+      <FloatingBack onBack={() => navigation.goBack()} />
     </SafeAreaView>
   );
 };

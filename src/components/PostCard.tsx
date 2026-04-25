@@ -2,10 +2,11 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { Post } from '../api/types';
+import { useToggleLike } from '../hooks/useToggleLike';
 import { colors, radii, spacing, typography } from '../theme/tokens';
 import { Avatar } from './Avatar';
 import { ActionChip } from './ActionChip';
-import { LikeIcon, LikeIconSolid } from './icons/LikeIcon';
+import { AnimatedLikeChip } from './AnimatedLikeChip';
 import { CommentIcon } from './icons/CommentIcon';
 import { PaidLock } from './PaidLock';
 
@@ -17,6 +18,7 @@ interface Props {
 export const PostCard: React.FC<Props> = React.memo(({ post, onPress }) => {
   const isPaid = post.tier === 'paid';
   const handlePress = () => onPress?.(post);
+  const toggleLike = useToggleLike(post.id);
 
   return (
     <Pressable
@@ -54,12 +56,11 @@ export const PostCard: React.FC<Props> = React.memo(({ post, onPress }) => {
       )}
 
       <View style={styles.actions}>
-        <ActionChip
-          accessibilityLabel="Лайк"
+        <AnimatedLikeChip
           active={post.isLiked}
           count={post.likesCount}
-          icon={<LikeIcon color={colors.iconMuted} />}
-          iconActive={<LikeIconSolid color={colors.likeActiveText} />}
+          disabled={toggleLike.isPending}
+          onPress={() => toggleLike.mutate()}
         />
         <ActionChip
           accessibilityLabel="Комментарии"
