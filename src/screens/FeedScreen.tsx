@@ -56,9 +56,22 @@ export const FeedScreen: React.FC = observer(() => {
     [navigation],
   );
 
+  const handleOpenComments = useCallback(
+    (post: Post) => {
+      navigation.navigate('PostDetail', { postId: post.id, focusComposer: true });
+    },
+    [navigation],
+  );
+
   const renderItem: ListRenderItem<Post> = useCallback(
-    ({ item }) => <PostCard post={item} onPress={handleOpenPost} />,
-    [handleOpenPost],
+    ({ item }) => (
+      <PostCard
+        post={item}
+        onPress={handleOpenPost}
+        onCommentPress={handleOpenComments}
+      />
+    ),
+    [handleOpenPost, handleOpenComments],
   );
 
   const keyExtractor = useCallback((item: Post) => item.id, []);

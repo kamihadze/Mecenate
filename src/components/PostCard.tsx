@@ -13,11 +13,13 @@ import { PaidLock } from './PaidLock';
 interface Props {
   post: Post;
   onPress?: (post: Post) => void;
+  onCommentPress?: (post: Post) => void;
 }
 
-export const PostCard: React.FC<Props> = React.memo(({ post, onPress }) => {
+export const PostCard: React.FC<Props> = React.memo(({ post, onPress, onCommentPress }) => {
   const isPaid = post.tier === 'paid';
   const handlePress = () => onPress?.(post);
+  const handleCommentPress = onCommentPress ? () => onCommentPress(post) : undefined;
   const toggleLike = useToggleLike(post.id);
 
   return (
@@ -66,6 +68,7 @@ export const PostCard: React.FC<Props> = React.memo(({ post, onPress }) => {
           accessibilityLabel="Комментарии"
           count={post.commentsCount}
           icon={<CommentIcon color={colors.iconMuted} />}
+          onPress={handleCommentPress}
         />
       </View>
     </Pressable>

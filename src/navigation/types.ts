@@ -1,6 +1,6 @@
 export type RootStackParamList = {
   Feed: undefined;
-  PostDetail: { postId: string };
+  PostDetail: { postId: string; focusComposer?: boolean };
 };
 
 declare global {

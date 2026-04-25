@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -41,7 +41,7 @@ const pluralComments = (n: number): string => {
 export const PostDetailScreen: React.FC = () => {
   const route = useRoute<DetailRoute>();
   const insets = useSafeAreaInsets();
-  const { postId } = route.params;
+  const { postId, focusComposer: shouldFocus } = route.params;
 
   const postQuery = usePostDetail(postId);
   const commentsQuery = usePostComments(postId);
@@ -52,6 +52,12 @@ export const PostDetailScreen: React.FC = () => {
   const focusComposer = useCallback(() => {
     composerRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (!shouldFocus) return;
+    const t = setTimeout(focusComposer, 350);
+    return () => clearTimeout(t);
+  }, [shouldFocus, focusComposer]);
 
   const comments = useMemo<Comment[]>(
     () => (commentsQuery.data?.pages ?? []).flatMap((p) => p.comments),
