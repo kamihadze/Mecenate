@@ -10,9 +10,9 @@ interface Props {
 export const BackIcon: React.FC<Props> = ({ size = 24, color = colors.textPrimary }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
-      d="M16 6L10 12L16 18"
+      d="M15 6L9 12L15 18"
       stroke={color}
-      strokeWidth={2.25}
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
     />

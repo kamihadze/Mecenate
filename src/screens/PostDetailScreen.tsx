@@ -81,7 +81,7 @@ export const PostDetailScreen: React.FC = () => {
 
   if (postQuery.isPending) {
     return (
-      <View style={[styles.wrap, { paddingTop: insets.top }]}>
+      <View style={styles.wrap}>
         <View style={styles.center}>
           <ActivityIndicator color={colors.primary} />
         </View>
@@ -91,7 +91,7 @@ export const PostDetailScreen: React.FC = () => {
 
   if (postQuery.isError || !post) {
     return (
-      <View style={[styles.wrap, { paddingTop: insets.top }]}>
+      <View style={styles.wrap}>
         <ErrorState
           message="Не удалось загрузить публикацию"
           actionLabel="Повторить"

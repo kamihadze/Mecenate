@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
@@ -17,17 +17,15 @@ const HeaderBack: React.FC<NativeStackHeaderLeftProps> = ({ canGoBack }) => {
   const navigation = useNavigation();
   if (!canGoBack) return null;
   return (
-    <View style={styles.backWrap}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Назад"
-        hitSlop={12}
-        style={({ pressed }) => [styles.backBtn, pressed && styles.backPressed]}
-        onPress={() => navigation.goBack()}
-      >
-        <BackIcon color={colors.onPrimary} />
-      </Pressable>
-    </View>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Назад"
+      hitSlop={12}
+      style={({ pressed }) => [styles.backBtn, pressed && styles.backPressed]}
+      onPress={() => navigation.goBack()}
+    >
+      <BackIcon color={colors.textPrimary} />
+    </Pressable>
   );
 };
 
@@ -45,11 +43,10 @@ export const AppNavigator: React.FC = () => (
         component={PostDetailScreen}
         options={{
           headerShown: true,
-          headerTransparent: true,
           headerTitle: '',
           headerBackVisible: false,
+          headerShadowVisible: false,
           headerLeft: (props) => <HeaderBack {...props} />,
-          headerStyle: { backgroundColor: 'transparent' },
         }}
       />
     </Stack.Navigator>
@@ -57,18 +54,13 @@ export const AppNavigator: React.FC = () => (
 );
 
 const styles = StyleSheet.create({
-  backWrap: {
-    paddingLeft: 4,
-  },
   backBtn: {
     width: 36,
     height: 36,
-    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.scrim,
   },
   backPressed: {
-    opacity: 0.7,
+    opacity: 0.5,
   },
 });
