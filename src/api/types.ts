@@ -42,3 +42,28 @@ export interface PostsQuery {
   tier?: PostTier;
   simulateError?: boolean;
 }
+
+export interface Comment {
+  id: string;
+  postId: string;
+  author: Author;
+  text: string;
+  createdAt: string;
+}
+
+export interface CommentsPage {
+  comments: Comment[];
+  nextCursor: string | null;
+  hasMore: boolean;
+}
+
+export interface CommentsQuery {
+  postId: string;
+  limit?: number;
+  cursor?: string | null;
+}
+
+export interface LikeResult {
+  isLiked: boolean;
+  likesCount: number;
+}

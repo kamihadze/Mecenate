@@ -3,14 +3,20 @@ export const colors = {
   cardBg: '#FFFFFF',
   textPrimary: '#111416',
   textSecondary: '#57626F',
+  textMuted: '#68727D',
+  placeholder: '#A4AAB0',
   chipBg: '#EFF2F7',
+  divider: '#EFF2F7',
+  tabBorder: '#E8ECEF',
   primary: '#6115CD',
+  primarySoft: '#C8A4F0',
   onPrimary: '#FFFFFF',
   iconMuted: '#57626F',
   likeActive: '#FF2B75',
   likeActiveText: '#FFEAF1',
   skeleton: '#EEEFF1',
   overlay: 'rgba(0, 0, 0, 0.5)',
+  scrim: 'rgba(255, 255, 255, 0.85)',
   gradientEnd: '#FFFFFF',
 } as const;
 
@@ -45,6 +51,31 @@ export const typography = {
     fontFamily: 'Manrope_500Medium',
     fontSize: 15,
     lineHeight: 20,
+  },
+  commentText: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  sectionLabel: {
+    fontFamily: 'Manrope_600SemiBold',
+    fontSize: 15,
+    lineHeight: 20,
+  },
+  link: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 15,
+    lineHeight: 20,
+  },
+  tabActive: {
+    fontFamily: 'Manrope_700Bold',
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  tabInactive: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 13,
+    lineHeight: 18,
   },
   chip: {
     fontFamily: 'Manrope_700Bold',

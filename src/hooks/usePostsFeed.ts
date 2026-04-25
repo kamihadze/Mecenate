@@ -2,21 +2,24 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { fetchPostsFeed } from '../api/posts';
 import { postsKeys } from '../api/queryKeys';
+import { PostTier } from '../api/types';
 import { useSessionStore, useUIStore } from '../stores/StoreContext';
 
 const PAGE_SIZE = 10;
 
 export interface UsePostsFeedOptions {
   simulateError?: boolean;
+  tier?: PostTier;
 }
 
 export function usePostsFeed(options: UsePostsFeedOptions = {}) {
   const session = useSessionStore();
   const ui = useUIStore();
   const simulateError = options.simulateError ?? ui.forceError;
+  const tier = options.tier;
 
   return useInfiniteQuery({
-    queryKey: postsKeys.feed({ simulateError }),
+    queryKey: postsKeys.feed({ simulateError, tier }),
     enabled: !!session.token,
     initialPageParam: null as string | null,
     queryFn: ({ pageParam, signal }) =>
@@ -25,6 +28,7 @@ export function usePostsFeed(options: UsePostsFeedOptions = {}) {
           limit: PAGE_SIZE,
           cursor: pageParam,
           simulateError,
+          tier,
         },
         session.token!,
         signal,

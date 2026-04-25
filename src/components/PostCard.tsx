@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { Post } from '../api/types';
 import { colors, radii, spacing, typography } from '../theme/tokens';
@@ -11,12 +11,20 @@ import { PaidLock } from './PaidLock';
 
 interface Props {
   post: Post;
+  onPress?: (post: Post) => void;
 }
 
-export const PostCard: React.FC<Props> = React.memo(({ post }) => {
+export const PostCard: React.FC<Props> = React.memo(({ post, onPress }) => {
   const isPaid = post.tier === 'paid';
+  const handlePress = () => onPress?.(post);
+
   return (
-    <View style={styles.card}>
+    <Pressable
+      onPress={handlePress}
+      disabled={!onPress}
+      style={({ pressed }) => [styles.card, pressed && onPress ? styles.pressed : null]}
+      accessibilityRole="button"
+    >
       <View style={styles.header}>
         <Avatar uri={post.author.avatarUrl} />
         <Text style={styles.authorName} numberOfLines={1}>
@@ -50,16 +58,16 @@ export const PostCard: React.FC<Props> = React.memo(({ post }) => {
           accessibilityLabel="Лайк"
           active={post.isLiked}
           count={post.likesCount}
-          icon={<LikeIcon color={colors.textSecondary} />}
+          icon={<LikeIcon color={colors.iconMuted} />}
           iconActive={<LikeIconSolid color={colors.likeActiveText} />}
         />
         <ActionChip
           accessibilityLabel="Комментарии"
           count={post.commentsCount}
-          icon={<CommentIcon color={colors.textSecondary} />}
+          icon={<CommentIcon color={colors.iconMuted} />}
         />
       </View>
-    </View>
+    </Pressable>
   );
 });
 
@@ -71,6 +79,9 @@ const styles = StyleSheet.create({
     borderRadius: radii.card,
     overflow: 'hidden',
     marginBottom: spacing.l,
+  },
+  pressed: {
+    opacity: 0.96,
   },
   header: {
     flexDirection: 'row',
