@@ -43,6 +43,7 @@ export const AppNavigator: React.FC = () => (
         component={PostDetailScreen}
         options={{
           headerShown: true,
+          headerTransparent: true,
           headerTitle: '',
           headerBackVisible: false,
           headerShadowVisible: false,
