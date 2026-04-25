@@ -1,25 +1,23 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import {
   ActivityIndicator,
   FlatList,
   KeyboardAvoidingView,
   ListRenderItem,
   Platform,
-  Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRoute, RouteProp } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ActionChip } from '../components/ActionChip';
 import { AnimatedLikeChip } from '../components/AnimatedLikeChip';
 import { Avatar } from '../components/Avatar';
-import { BackIcon } from '../components/icons/BackIcon';
 import { CommentIcon } from '../components/icons/CommentIcon';
 import { CommentRow } from '../components/CommentRow';
-import { CommentComposer } from '../components/CommentComposer';
+import { CommentComposer, CommentComposerHandle } from '../components/CommentComposer';
 import { ErrorState } from '../components/ErrorState';
 import { Comment } from '../api/types';
 import { usePostDetail } from '../hooks/usePostDetail';
@@ -42,7 +40,6 @@ const pluralComments = (n: number): string => {
 
 export const PostDetailScreen: React.FC = () => {
   const route = useRoute<DetailRoute>();
-  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const { postId } = route.params;
 
@@ -50,6 +47,11 @@ export const PostDetailScreen: React.FC = () => {
   const commentsQuery = usePostComments(postId);
   const toggleLike = useToggleLike(postId);
   const createComment = useCreateComment(postId);
+  const composerRef = useRef<CommentComposerHandle>(null);
+
+  const focusComposer = useCallback(() => {
+    composerRef.current?.focus();
+  }, []);
 
   const comments = useMemo<Comment[]>(
     () => (commentsQuery.data?.pages ?? []).flatMap((p) => p.comments),
@@ -73,32 +75,30 @@ export const PostDetailScreen: React.FC = () => {
 
   if (postQuery.isPending) {
     return (
-      <SafeAreaView style={styles.wrap} edges={['top']}>
+      <View style={[styles.wrap, { paddingTop: insets.top }]}>
         <View style={styles.center}>
           <ActivityIndicator color={colors.primary} />
         </View>
-        <FloatingBack onBack={() => navigation.goBack()} />
-      </SafeAreaView>
+      </View>
     );
   }
 
   if (postQuery.isError || !post) {
     return (
-      <SafeAreaView style={styles.wrap} edges={['top']}>
+      <View style={[styles.wrap, { paddingTop: insets.top }]}>
         <ErrorState
           message="Не удалось загрузить публикацию"
           actionLabel="Повторить"
           onRetry={() => postQuery.refetch()}
         />
-        <FloatingBack onBack={() => navigation.goBack()} />
-      </SafeAreaView>
+      </View>
     );
   }
 
   const isPaid = post.tier === 'paid';
 
   return (
-    <SafeAreaView style={styles.wrap} edges={['top']}>
+    <View style={styles.wrap}>
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -149,6 +149,7 @@ export const PostDetailScreen: React.FC = () => {
                   accessibilityLabel="Комментарии"
                   count={post.commentsCount}
                   icon={<CommentIcon color={colors.iconMuted} />}
+                  onPress={focusComposer}
                 />
               </View>
 
@@ -180,6 +181,7 @@ export const PostDetailScreen: React.FC = () => {
 
         <View style={{ paddingBottom: insets.bottom }}>
           <CommentComposer
+            ref={composerRef}
             onSubmit={async (text) => {
               await createComment.mutateAsync(text);
             }}
@@ -187,23 +189,9 @@ export const PostDetailScreen: React.FC = () => {
           />
         </View>
       </KeyboardAvoidingView>
-
-      <FloatingBack onBack={() => navigation.goBack()} />
-    </SafeAreaView>
+    </View>
   );
 };
-
-const FloatingBack: React.FC<{ onBack: () => void }> = ({ onBack }) => (
-  <Pressable
-    accessibilityRole="button"
-    accessibilityLabel="Назад"
-    onPress={onBack}
-    style={({ pressed }) => [styles.backBtn, pressed && styles.backPressed]}
-    hitSlop={12}
-  >
-    <BackIcon />
-  </Pressable>
-);
 
 const styles = StyleSheet.create({
   wrap: {
@@ -212,21 +200,6 @@ const styles = StyleSheet.create({
   },
   flex: { flex: 1 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  backBtn: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    zIndex: 10,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.scrim,
-  },
-  backPressed: {
-    opacity: 0.7,
-  },
   listContent: {
     paddingBottom: spacing.l,
   },

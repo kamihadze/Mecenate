@@ -1,12 +1,35 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {
+  createNativeStackNavigator,
+  NativeStackHeaderLeftProps,
+} from '@react-navigation/native-stack';
+import { BackIcon } from '../components/icons/BackIcon';
 import { FeedScreen } from '../screens/FeedScreen';
 import { PostDetailScreen } from '../screens/PostDetailScreen';
 import { colors } from '../theme/tokens';
 import { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const HeaderBack: React.FC<NativeStackHeaderLeftProps> = ({ canGoBack }) => {
+  const navigation = useNavigation();
+  if (!canGoBack) return null;
+  return (
+    <View style={styles.backWrap}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Назад"
+        hitSlop={12}
+        style={({ pressed }) => [styles.backBtn, pressed && styles.backPressed]}
+        onPress={() => navigation.goBack()}
+      >
+        <BackIcon />
+      </Pressable>
+    </View>
+  );
+};
 
 export const AppNavigator: React.FC = () => (
   <NavigationContainer>
@@ -17,7 +40,35 @@ export const AppNavigator: React.FC = () => (
       }}
     >
       <Stack.Screen name="Feed" component={FeedScreen} />
-      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+      <Stack.Screen
+        name="PostDetail"
+        component={PostDetailScreen}
+        options={{
+          headerShown: true,
+          headerTransparent: true,
+          headerTitle: '',
+          headerBackVisible: false,
+          headerLeft: (props) => <HeaderBack {...props} />,
+          headerStyle: { backgroundColor: 'transparent' },
+        }}
+      />
     </Stack.Navigator>
   </NavigationContainer>
 );
+
+const styles = StyleSheet.create({
+  backWrap: {
+    paddingLeft: 4,
+  },
+  backBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.scrim,
+  },
+  backPressed: {
+    opacity: 0.7,
+  },
+});

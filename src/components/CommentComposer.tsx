@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -9,6 +14,10 @@ import {
 import { colors, spacing, typography } from '../theme/tokens';
 import { PaperPlaneIcon } from './icons/PaperPlaneIcon';
 
+export interface CommentComposerHandle {
+  focus: () => void;
+}
+
 interface Props {
   onSubmit: (text: string) => void | Promise<void>;
   pending?: boolean;
@@ -16,12 +25,16 @@ interface Props {
   maxLength?: number;
 }
 
-export const CommentComposer: React.FC<Props> = ({
+export const CommentComposer = forwardRef<CommentComposerHandle, Props>(({
   onSubmit,
   pending,
   placeholder = 'Ваш комментарий',
   maxLength = 500,
-}) => {
+}, ref) => {
+  const inputRef = useRef<TextInput>(null);
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus(),
+  }));
   const [value, setValue] = useState('');
   const trimmed = value.trim();
   const canSend = trimmed.length > 0 && !pending;
@@ -40,6 +53,7 @@ export const CommentComposer: React.FC<Props> = ({
     <View style={styles.wrap}>
       <View style={styles.inputWrap}>
         <TextInput
+          ref={inputRef}
           value={value}
           onChangeText={setValue}
           placeholder={placeholder}
@@ -75,7 +89,9 @@ export const CommentComposer: React.FC<Props> = ({
       </Pressable>
     </View>
   );
-};
+});
+
+CommentComposer.displayName = 'CommentComposer';
 
 const styles = StyleSheet.create({
   wrap: {
